@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MailBoxer Pro - Email Sementara Custom</title>
+  <title>MailBoxer Pro - Email Custom & Riwayat Inbox</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -40,7 +40,7 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-indigo-500 selection:text-white relative overflow-x-hidden">
 
-  <!-- Background Decorative Ambient Glows -->
+  <!-- Background Ambient Glows -->
   <div class="fixed top-[-10%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none"></div>
   <div class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none"></div>
 
@@ -58,7 +58,6 @@
       </div>
 
       <div class="flex items-center gap-3">
-        <!-- Status Indicator -->
         <div class="flex items-center gap-2 text-xs font-medium bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700/50">
           <span class="relative flex h-2 w-2">
             <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -72,13 +71,13 @@
   <!-- Main Content Container -->
   <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6">
 
-    <!-- Hero / Custom Email Card -->
+    <!-- Card Email Custom -->
     <div class="bg-slate-900/80 border border-slate-800/90 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden backdrop-blur-xl">
       
       <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
         <div>
           <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Email Sementara Custom</h1>
-          <p class="text-slate-400 text-sm mt-1">Buat nama email sesuai keinginanmu atau gunakan generator acak.</p>
+          <p class="text-slate-400 text-sm mt-1">Buat nama email baru atau beralih ke alamat email lama.</p>
         </div>
         
         <button onclick="generateRandomEmail()" class="self-start md:self-auto flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold border border-slate-700/80 transition duration-200">
@@ -87,9 +86,9 @@
         </button>
       </div>
 
-      <!-- Custom Email Input Form -->
+      <!-- Form Custom Email -->
       <form onsubmit="handleCustomSubmit(event)" class="space-y-3">
-        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Atur Alamat Email</label>
+        <label class="block text-xs font-semibold text-slate-400 uppercase tracking-wider">Atur Alamat Email Baru</label>
         
         <div class="flex flex-col sm:flex-row gap-2">
           <!-- Username Input -->
@@ -98,12 +97,12 @@
                    class="w-full bg-slate-950/80 border border-slate-700/80 text-white font-mono-custom text-sm sm:text-base rounded-xl px-4 py-3.5 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition placeholder:text-slate-600">
           </div>
 
-          <!-- At Sign Separator -->
+          <!-- Separator -->
           <div class="hidden sm:flex items-center justify-center text-slate-500 font-bold px-1">
             @
           </div>
 
-          <!-- Domain Dropdown Select -->
+          <!-- Domain Select -->
           <div class="relative min-w-[160px]">
             <select id="domainSelect" class="w-full h-full bg-slate-950/80 border border-slate-700/80 text-slate-200 font-mono-custom text-sm rounded-xl px-4 py-3.5 sm:py-0 focus:outline-none focus:border-indigo-500 cursor-pointer appearance-none">
               <option value="">Memuat domain...</option>
@@ -113,7 +112,7 @@
             </div>
           </div>
 
-          <!-- Submit / Set Button -->
+          <!-- Submit Button -->
           <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold px-6 py-3.5 rounded-xl text-sm flex items-center justify-center gap-2 transition duration-200 shadow-lg shadow-indigo-600/20 active:scale-95">
             <i data-lucide="check-circle-2" class="w-4 h-4"></i>
             <span>Terapkan</span>
@@ -121,7 +120,7 @@
         </div>
       </form>
 
-      <!-- Active Email Display Bar -->
+      <!-- Display Email Aktif -->
       <div class="mt-6 bg-slate-950/60 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-3">
         <div class="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
           <div class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0">
@@ -149,7 +148,22 @@
       </div>
     </div>
 
-    <!-- Inbox Messages Section -->
+    <!-- Riwayat Email Custom -->
+    <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 backdrop-blur-xl">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
+          <h2 class="text-sm font-bold text-white uppercase tracking-wider">Email Custom Tersimpan</h2>
+        </div>
+        <span class="text-[11px] text-slate-500">Klik untuk mengambil inbox email lama</span>
+      </div>
+
+      <div id="emailHistoryContainer" class="flex flex-wrap gap-2">
+        <span class="text-xs text-slate-500 italic">Belum ada email tersimpan...</span>
+      </div>
+    </div>
+
+    <!-- Section Daftar Pesan / Inbox -->
     <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 backdrop-blur-xl flex-1 flex flex-col">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2.5">
@@ -157,14 +171,14 @@
           <span id="messageBadge" class="bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-xs px-2.5 py-0.5 rounded-full font-bold">0</span>
         </div>
 
-        <!-- Tombol Segarkan Inbox (Utama) -->
+        <!-- Tombol Segarkan Inbox -->
         <button onclick="checkInbox(true)" id="btnRefreshInbox" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl border border-indigo-500/50 flex items-center gap-2 transition duration-150 shadow-lg shadow-indigo-600/20 active:scale-95">
           <i data-lucide="rotate-cw" id="refreshIcon" class="w-4 h-4"></i>
           <span>Segarkan Inbox</span>
         </button>
       </div>
 
-      <!-- Inbox List Container -->
+      <!-- Container Daftar Pesan -->
       <div class="flex-1">
         <ul id="inboxList" class="space-y-3">
           <!-- Default Empty State -->
@@ -173,7 +187,7 @@
               <i data-lucide="inbox" class="w-6 h-6"></i>
             </div>
             <p class="text-slate-300 font-medium text-sm">Belum Ada Pesan Masuk</p>
-            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email custom di atas. Klik tombol <strong>"Segarkan Inbox"</strong> di atas untuk mengecek email baru.</p>
+            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email di atas. Klik tombol <strong>"Segarkan Inbox"</strong> untuk mengecek pesan baru.</p>
           </li>
         </ul>
       </div>
@@ -181,7 +195,7 @@
 
   </main>
 
-  <!-- Modal Read Email -->
+  <!-- Modal Baca Email -->
   <div id="emailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 md:p-8 shadow-2xl relative flex flex-col max-h-[85vh] text-slate-200">
       <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
@@ -214,11 +228,25 @@
   <script>
     let sidToken = '';
     let currentEmail = '';
+    let emailHistory = [];
 
-    // Initialize Lucide Icons
     lucide.createIcons();
 
-    // 1. Load Available Domains
+    // Cleaning string pengirim dari tag HTML (<...>) & HTML entities
+    function cleanSenderText(text) {
+      if (!text) return 'Tidak diketahui';
+      
+      // Decode HTML entities
+      const doc = new DOMParser().parseFromString(text, 'text/html');
+      let cleaned = doc.body.textContent || "";
+      
+      // Hapus karakter '<' dan '>' beserta isinya jika berupa format email standar "Nama <email@domain.com>"
+      cleaned = cleaned.replace(/<[^>]*>/g, '').trim();
+      
+      return cleaned || text;
+    }
+
+    // Load Domain Pertama Kali
     async function loadDomains() {
       try {
         const res = await fetch('https://api.guerrillamail.com/ajax.php?f=get_email_address');
@@ -242,8 +270,9 @@
         
         currentEmail = data.email_addr;
         updateUIEmailDisplay(currentEmail);
-        document.getElementById('statusText').innerText = "Email Siap Digunakan";
+        saveEmailToHistory(currentEmail);
 
+        document.getElementById('statusText').innerText = "Email Siap Digunakan";
         checkInbox();
       } catch (err) {
         console.error(err);
@@ -251,16 +280,21 @@
       }
     }
 
-    // 2. Set Custom Email Username & Domain
+    // Terapkan Custom Email
     async function handleCustomSubmit(e) {
-      e.preventDefault();
+      if (e) e.preventDefault();
       const username = document.getElementById('usernameInput').value.trim().toLowerCase();
       const domain = document.getElementById('domainSelect').value;
 
       if (!username) return;
 
+      switchEmailTo(username, domain);
+    }
+
+    // Beralih ke Email Tertentu (Bisa dari Form atau dari Riwayat Email Lama)
+    async function switchEmailTo(username, domain) {
       const statusText = document.getElementById('statusText');
-      statusText.innerText = "Mengatur alamat email custom...";
+      statusText.innerText = "Mengambil data email...";
 
       try {
         const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=set_email_user&email_user=${encodeURIComponent(username)}&sid_token=${sidToken}&site=${domain}`);
@@ -270,34 +304,82 @@
         sidToken = data.sid_token;
 
         updateUIEmailDisplay(currentEmail);
-        statusText.innerText = "Custom Email Berhasil Diterapkan!";
+        saveEmailToHistory(currentEmail);
 
+        // Update Form Input Sesuai Email Aktif
+        const parts = currentEmail.split('@');
+        document.getElementById('usernameInput').value = parts[0];
+        if (parts[1]) document.getElementById('domainSelect').value = parts[1];
+
+        statusText.innerText = "Berhasil Beralih Email!";
         checkInbox(true);
       } catch (err) {
         console.error(err);
-        statusText.innerText = "Gagal mengubah email custom.";
+        statusText.innerText = "Gagal beralih ke email ini.";
       }
     }
 
-    // 3. Generate Random Email
+    // Simpan Email Ke Riwayat Custom Email
+    function saveEmailToHistory(email) {
+      if (!emailHistory.includes(email)) {
+        emailHistory.unshift(email);
+        renderEmailHistory();
+      }
+    }
+
+    // Tampilkan Daftar Riwayat Email
+    function renderEmailHistory() {
+      const container = document.getElementById('emailHistoryContainer');
+      
+      if (emailHistory.length === 0) {
+        container.innerHTML = `<span class="text-xs text-slate-500 italic">Belum ada email tersimpan...</span>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      emailHistory.forEach(email => {
+        const isCurrent = email === currentEmail;
+        const parts = email.split('@');
+        const user = parts[0];
+        const domain = parts[1];
+
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.onclick = () => switchEmailTo(user, domain);
+        
+        btn.className = isCurrent 
+          ? 'bg-indigo-600/30 border border-indigo-500 text-indigo-300 font-mono-custom text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-semibold cursor-default'
+          : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-mono-custom text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition active:scale-95';
+
+        btn.innerHTML = `
+          <i data-lucide="${isCurrent ? 'check-circle' : 'mail'}" class="w-3.5 h-3.5 ${isCurrent ? 'text-indigo-400' : 'text-slate-400'}"></i>
+          <span>${email}</span>
+        `;
+        
+        container.appendChild(btn);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Acak Nama Email
     function generateRandomEmail() {
       const randomName = 'user_' + Math.random().toString(36).substring(2, 9);
       document.getElementById('usernameInput').value = randomName;
-      document.forms[0].dispatchEvent(new Event('submit'));
+      handleCustomSubmit();
     }
 
     function updateUIEmailDisplay(email) {
       document.getElementById('activeEmailDisplay').innerText = email;
     }
 
-    // 4. Check Inbox (Manual via Tombol Segarkan)
+    // Segarkan Inbox (Pencecekan Manual)
     async function checkInbox(manual = false) {
       if (!sidToken) return;
 
       const statusText = document.getElementById('statusText');
       const refreshIcon = document.getElementById('refreshIcon');
 
-      // Animasi Putar Tombol Refresh
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
       if (manual) statusText.innerText = "Memeriksa pesan baru...";
 
@@ -306,6 +388,7 @@
         const data = await res.json();
         const messages = data.list || [];
 
+        // Filter pesan pembuka default
         const realMessages = messages.filter(msg => msg.mail_from !== 'no-reply@guerrillamail.com');
 
         document.getElementById('messageBadge').innerText = realMessages.length;
@@ -316,14 +399,13 @@
         console.error("Error inbox:", err);
         statusText.innerText = "Gagal menyegarkan inbox.";
       } finally {
-        // Hentikan animasi putar
         if (refreshIcon) {
           setTimeout(() => refreshIcon.classList.remove('animate-spin'), 500);
         }
       }
     }
 
-    // 5. Render Inbox Messages
+    // Render Inbox Pesan Pas Tanpa Tag Kode <>
     function renderInbox(messages) {
       const inboxList = document.getElementById('inboxList');
 
@@ -334,7 +416,7 @@
               <i data-lucide="inbox" class="w-6 h-6"></i>
             </div>
             <p class="text-slate-300 font-medium text-sm">Belum Ada Pesan Masuk</p>
-            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email custom di atas. Klik tombol <strong>"Segarkan Inbox"</strong> untuk mengecek pesan baru.</p>
+            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email di atas. Klik tombol <strong>"Segarkan Inbox"</strong> untuk mengecek pesan baru.</p>
           </li>
         `;
         lucide.createIcons();
@@ -343,6 +425,11 @@
 
       inboxList.innerHTML = '';
       messages.forEach(msg => {
+        // Bersihkan teks pengirim dari kode/tag <>
+        const senderClean = cleanSenderText(msg.mail_from);
+        const subjectClean = cleanSenderText(msg.mail_subject) || '(Tanpa Subjek)';
+        const excerptClean = cleanSenderText(msg.mail_excerpt);
+
         const li = document.createElement('li');
         li.className = 'bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-4 transition duration-200 cursor-pointer flex items-center justify-between gap-4 group';
         li.onclick = () => openEmailModal(msg.mail_id);
@@ -353,9 +440,9 @@
               <i data-lucide="mail-open" class="w-5 h-5"></i>
             </div>
             <div class="truncate">
-              <p class="text-xs text-slate-400 font-mono-custom">${msg.mail_from}</p>
-              <h4 class="text-sm font-bold text-white truncate mt-0.5">${msg.mail_subject || '(Tanpa Subjek)'}</h4>
-              <p class="text-xs text-slate-400 truncate mt-0.5">${msg.mail_excerpt}</p>
+              <p class="text-xs text-slate-400 font-mono-custom truncate">${senderClean}</p>
+              <h4 class="text-sm font-bold text-white truncate mt-0.5">${subjectClean}</h4>
+              <p class="text-xs text-slate-400 truncate mt-0.5">${excerptClean}</p>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
@@ -368,7 +455,7 @@
       lucide.createIcons();
     }
 
-    // 6. Open Email Modal
+    // Modal Baca Email
     async function openEmailModal(mailId) {
       const modal = document.getElementById('emailModal');
       const subject = document.getElementById('modalSubject');
@@ -382,8 +469,8 @@
         const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=fetch_email&sid_token=${sidToken}&email_id=${mailId}`);
         const data = await res.json();
 
-        subject.innerText = data.mail_subject || '(Tanpa Subjek)';
-        sender.innerText = `Dari: ${data.mail_from}`;
+        subject.innerText = cleanSenderText(data.mail_subject) || '(Tanpa Subjek)';
+        sender.innerText = `Dari: ${cleanSenderText(data.mail_from)}`;
         body.innerText = data.mail_body || data.mail_excerpt || 'Pesan kosong.';
       } catch (err) {
         body.innerText = "Gagal memuat detail isi pesan.";
@@ -394,7 +481,7 @@
       document.getElementById('emailModal').classList.add('hidden');
     }
 
-    // 7. Copy Active Email Address
+    // Salin Email
     function copyEmail() {
       if (!currentEmail) return;
 
