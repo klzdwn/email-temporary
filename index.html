@@ -122,21 +122,6 @@
       </div>
     </div>
 
-    <!-- Email Custom Tersimpan (History) -->
-    <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-5 backdrop-blur-xl">
-      <div class="flex items-center justify-between mb-3">
-        <div class="flex items-center gap-2">
-          <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
-          <h2 class="text-xs font-bold text-white uppercase tracking-wider">Email Tersimpan</h2>
-        </div>
-        <span class="text-[11px] text-slate-500">Klik untuk kembali ke inbox email lama</span>
-      </div>
-
-      <div id="emailHistoryContainer" class="flex flex-wrap gap-2">
-        <span class="text-xs text-slate-500 italic">Belum ada email tersimpan...</span>
-      </div>
-    </div>
-
     <!-- Section Inbox Pesan -->
     <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 backdrop-blur-xl flex-1 flex flex-col">
       <div class="flex items-center justify-between mb-4">
@@ -169,7 +154,7 @@
 
   </main>
 
-  <!-- MODAL CUSTOM EMAIL (Sesuai Gambar Acuan) -->
+  <!-- MODAL CUSTOM EMAIL -->
   <div id="customEmailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative text-slate-200">
       <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-4">
@@ -182,6 +167,7 @@
       <form onsubmit="handleCustomEmailSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1.5">Full Email Address:</label>
+          <!-- Input kosongan tanpa value bawaan -->
           <input type="email" id="fullEmailInput" placeholder="johndoe123@guerrillamail.com" required
                  class="w-full bg-slate-950 border border-slate-700/80 text-white font-mono-custom text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600">
           <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
@@ -232,7 +218,6 @@
   <script>
     let sidToken = '';
     let currentEmail = '';
-    let emailHistory = [];
 
     const availableDomains = [
       'guerrillamail.com',
@@ -244,7 +229,6 @@
 
     lucide.createIcons();
 
-    // Cleaning string pengirim dari tag HTML (<...>)
     function cleanSenderText(text) {
       if (!text) return '';
       const doc = new DOMParser().parseFromString(text, 'text/html');
@@ -261,7 +245,6 @@
         currentEmail = data.email_addr;
 
         updateUIEmailDisplay(currentEmail);
-        saveEmailToHistory(currentEmail);
 
         document.getElementById('statusText').innerText = "Email Siap Digunakan";
         checkInbox();
@@ -271,10 +254,12 @@
       }
     }
 
-    // Open/Close Modal Custom Email
+    // Open Modal Custom Email (Di-reset menjadi KOSONG saat dibuka)
     function openCustomModal() {
+      const input = document.getElementById('fullEmailInput');
+      input.value = ''; // Kosongkan input
       document.getElementById('customEmailModal').classList.remove('hidden');
-      document.getElementById('fullEmailInput').value = currentEmail;
+      input.focus();
     }
 
     function closeCustomModal() {
@@ -295,7 +280,6 @@
       const username = parts[0];
       let domain = parts[1];
 
-      // Jika domain tidak dimasukkan atau tidak didukung, default ke guerrillamail.com
       if (!availableDomains.includes(domain)) {
         domain = 'guerrillamail.com';
       }
@@ -317,7 +301,6 @@
         sidToken = data.sid_token;
 
         updateUIEmailDisplay(currentEmail);
-        saveEmailToHistory(currentEmail);
 
         statusText.innerText = "Berhasil Beralih Email!";
         checkInbox(true);
@@ -325,49 +308,6 @@
         console.error(err);
         statusText.innerText = "Gagal beralih ke email ini.";
       }
-    }
-
-    // Simpan Email ke Riwayat
-    function saveEmailToHistory(email) {
-      if (!emailHistory.includes(email)) {
-        emailHistory.unshift(email);
-        renderEmailHistory();
-      }
-    }
-
-    // Render Riwayat Email
-    function renderEmailHistory() {
-      const container = document.getElementById('emailHistoryContainer');
-      
-      if (emailHistory.length === 0) {
-        container.innerHTML = `<span class="text-xs text-slate-500 italic">Belum ada email tersimpan...</span>`;
-        return;
-      }
-
-      container.innerHTML = '';
-      emailHistory.forEach(email => {
-        const isCurrent = email === currentEmail;
-        const parts = email.split('@');
-        const user = parts[0];
-        const domain = parts[1];
-
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.onclick = () => switchEmailTo(user, domain);
-        
-        btn.className = isCurrent 
-          ? 'bg-indigo-600/30 border border-indigo-500 text-indigo-300 font-mono-custom text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 font-semibold cursor-default'
-          : 'bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white font-mono-custom text-xs px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition active:scale-95';
-
-        btn.innerHTML = `
-          <i data-lucide="${isCurrent ? 'check-circle' : 'mail'}" class="w-3.5 h-3.5 ${isCurrent ? 'text-indigo-400' : 'text-slate-400'}"></i>
-          <span>${email}</span>
-        `;
-        
-        container.appendChild(btn);
-      });
-
-      lucide.createIcons();
     }
 
     // Generate Email Random
@@ -380,7 +320,7 @@
       document.getElementById('activeEmailDisplay').innerText = email;
     }
 
-    // Segarkan Inbox (Manual)
+    // Segarkan Inbox
     async function checkInbox(manual = false) {
       if (!sidToken) return;
 
@@ -411,7 +351,7 @@
       }
     }
 
-    // Render Inbox
+    // Render List Inbox
     function renderInbox(messages) {
       const inboxList = document.getElementById('inboxList');
 
