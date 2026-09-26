@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MailBoxer Pro - TMail Temporary Engine</title>
+  <title>MailBoxer Pro - TMail Engine</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +18,7 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .font-mono-custom { font-family: 'Fira Code', monospace; }
 
-    /* Rendering Tampilan Email Ala Gmail */
+    /* Style Format Gmail untuk Isi Pesan */
     .email-rendered-content {
       color: #cbd5e1;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -60,10 +60,10 @@
       </div>
 
       <div class="flex items-center gap-2 text-xs bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700/50">
-        <span class="relative flex h-2 w-2">
+        <span id="onlineDot" class="relative flex h-2 w-2">
           <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
-        <span>TMail Connected</span>
+        <span id="onlineStatus">Terhubung</span>
       </div>
     </div>
   </header>
@@ -211,14 +211,40 @@
   <script>
     let currentLogin = '';
     let currentDomain = '';
-    let defaultDomains = ['1secmail.com', '1secmail.org', '1secmail.net'];
+    let availableDomains = ['1secmail.com', '1secmail.org', '1secmail.net'];
 
     lucide.createIcons();
 
+    // Utility Fetch dengan Proxy Fallback jika CORS Terhalang
+    async function apiFetch(targetUrl) {
+      try {
+        // Coba panggil langsung
+        const response = await fetch(targetUrl);
+        if (response.ok) return await response.json();
+      } catch (err) {
+        console.warn("Direct fetch failed, trying CORS proxy...", err);
+      }
+
+      // Jika diblokir CORS oleh browser, gunakan Corsproxy fallback
+      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
+      const proxyResponse = await fetch(proxyUrl);
+      return await proxyResponse.json();
+    }
+
     // Inisialisasi Email Pertama
     async function initEmail() {
+      try {
+        // Ambil daftar domain aktif jika tersedia
+        const domains = await apiFetch('https://www.1secmail.com/api/v1/?action=getDomainList');
+        if (domains && domains.length > 0) {
+          availableDomains = domains;
+        }
+      } catch (e) {
+        console.log("Menggunakan domain default");
+      }
+
       const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
-      setCustomEmail(randUser, '1secmail.com');
+      setCustomEmail(randUser, availableDomains[0] || '1secmail.com');
     }
 
     // Set Email Aktif
@@ -236,11 +262,11 @@
     // Acak Email
     function generateRandomEmail() {
       const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
-      const randDomain = defaultDomains[Math.floor(Math.random() * defaultDomains.length)];
+      const randDomain = availableDomains[Math.floor(Math.random() * availableDomains.length)];
       setCustomEmail(randUser, randDomain);
     }
 
-    // Process Custom Email Modal Submit
+    // Process Custom Email Submit
     function handleCustomEmailSubmit(e) {
       e.preventDefault();
       const input = document.getElementById('fullEmailInput').value.trim();
@@ -248,19 +274,19 @@
       if (!input) return;
 
       let login = input;
-      let domain = '1secmail.com';
+      let domain = availableDomains[0] || '1secmail.com';
 
       if (input.includes('@')) {
         const parts = input.split('@');
         login = parts[0];
-        domain = parts[1] || '1secmail.com';
+        domain = parts[1] || domain;
       }
 
       setCustomEmail(login, domain);
       closeCustomModal();
     }
 
-    // Check Inbox ke API TMail (1secmail)
+    // Check Inbox ke API TMail
     async function checkInbox(manual = false) {
       if (!currentLogin || !currentDomain) return;
 
@@ -271,16 +297,16 @@
       if (manual) statusText.innerText = "Memeriksa inbox TMail...";
 
       try {
-        const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`);
-        const messages = await res.json();
+        const url = `https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`;
+        const messages = await apiFetch(url);
 
-        document.getElementById('messageBadge').innerText = messages.length;
-        renderInbox(messages);
+        document.getElementById('messageBadge').innerText = messages ? messages.length : 0;
+        renderInbox(messages || []);
 
         statusText.innerText = "Selesai diperbarui";
       } catch (err) {
         console.error(err);
-        statusText.innerText = "Gagal terhubung ke TMail API.";
+        statusText.innerText = "Gagal menyegarkan inbox.";
       } finally {
         if (refreshIcon) {
           setTimeout(() => refreshIcon.classList.remove('animate-spin'), 500);
@@ -332,7 +358,7 @@
       lucide.createIcons();
     }
 
-    // Modal Buka Email (Render HTML Seperti Gmail)
+    // Modal Buka Email (Format HTML Gmail)
     async function openEmailModal(msgId) {
       const modal = document.getElementById('emailModal');
       const subject = document.getElementById('modalSubject');
@@ -343,17 +369,16 @@
       body.innerHTML = "<p class='text-slate-400 italic'>Memuat isi email...</p>";
 
       try {
-        const res = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${currentLogin}&domain=${currentDomain}&id=${msgId}`);
-        const data = await res.json();
+        const url = `https://www.1secmail.com/api/v1/?action=readMessage&login=${currentLogin}&domain=${currentDomain}&id=${msgId}`;
+        const data = await apiFetch(url);
 
         subject.innerText = data.subject || '(Tanpa Subjek)';
         sender.innerText = `Dari: ${data.from}`;
 
-        // Jika ada HTML, gunakan htmlBody, jika tidak ada fallback ke textBody
         let htmlContent = data.htmlBody || `<p>${data.textBody}</p>` || 'Pesan kosong.';
         body.innerHTML = htmlContent;
 
-        // Ubah semua link agar terbuka di tab baru saat diklik
+        // Ubah semua link agar bisa diklik langsung di tab baru
         const links = body.querySelectorAll('a');
         links.forEach(a => {
           a.setAttribute('target', '_blank');
