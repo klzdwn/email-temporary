@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Sementara Ku</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 30px auto; padding: 20px; background: #f4f6f8; }
+    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .email-box { display: flex; gap: 10px; margin-bottom: 20px; }
+    input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    button { padding: 10px 15px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
+    button:hover { background: #0056b3; }
+    ul { list-style: none; padding: 0; }
+    li { background: #eef2f5; margin-bottom: 8px; padding: 12px; border-radius: 4px; }
+    .sender { font-weight: bold; font-size: 14px; }
+    .subject { color: #333; margin-top: 4px; }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>📧 Generator Email Sementara</h2>
+    <div class="email-box">
+      <input type="text" id="emailInput" readonly value="Membuat email...">
+      <button onclick="generateNewEmail()">Buat Baru</button>
+    </div>
+
+    <h3>Inbox (Otomatis Cek):</h3>
+    <ul id="inboxList">
+      <li>Belum ada email masuk...</li>
+    </ul>
+  </div>
+
+  <script>
+    let currentLogin = '';
+    let currentDomain = '';
+
+    // 1. Fungsi untuk buat email baru
+    async function generateNewEmail() {
+      try {
+        const res = await fetch('https://www.1secmail.com/api/v1/?action=getDomainList');
+        const domains = await res.json();
+        
+        currentDomain = domains[0]; // Pakai domain pertama
+        currentLogin = Math.random().toString(36).substring(2, 10); // Random username
+        
+        const fullEmail = `${currentLogin}@${currentDomain}`;
+        document.getElementById('emailInput').value = fullEmail;
+        
+        // Reset list inbox
+        document.getElementById('inboxList').innerHTML = '<li>Belum ada email masuk...</li>';
+        
+        // Langsung cek inbox pertama kali
+        checkInbox();
+      } catch (err) {
+        console.error("Gagal generate email:", err);
+      }
+    }
+
+    // 2. Fungsi untuk cek inbox
+    async function checkInbox() {
+      if (!currentLogin || !currentDomain) return;
+
+      try {
+        const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`);
+        const messages = await res.json();
+
+        const inboxList = document.getElementById('inboxList');
+        
+        if (messages.length === 0) {
+          inboxList.innerHTML = '<li>Belum ada email masuk...</li>';
+          return;
+        }
+
+        inboxList.innerHTML = '';
+        messages.forEach(msg => {
+          const li = document.createElement('li');
+          li.innerHTML = `
+            <div class="sender">Dari: ${msg.from}</div>
+            <div class="subject">Subjek: ${msg.subject}</div>
+          `;
+          inboxList.appendChild(li);
+        });
+      } catch (err) {
+        console.error("Gagal cek inbox:", err);
+      }
+    }
+
+    // Jalankan saat pertama kali halaman di-load
+    generateNewEmail();
+
+    // Cek email otomatis setiap 5 detik (Polling)
+    setInterval(checkInbox, 5000);
+  </script>
+
+</body>
+</html>
