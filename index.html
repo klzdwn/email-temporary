@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MailBoxer Pro - Temporary Custom Email</title>
+  <title>MailBoxer Pro - TMail Temporary Engine</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -15,15 +15,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
   
   <style>
-    body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
-    
-    .font-mono-custom {
-      font-family: 'Fira Code', monospace;
-    }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    .font-mono-custom { font-family: 'Fira Code', monospace; }
 
-    /* Style Rendering HTML Email ala Gmail */
+    /* Rendering Tampilan Email Ala Gmail */
     .email-rendered-content {
       color: #cbd5e1;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -36,33 +31,18 @@
       word-break: break-all;
       font-weight: 600;
     }
-    .email-rendered-content a:hover {
-      color: #818cf8 !important;
-    }
-    .email-rendered-content p {
-      margin-bottom: 0.8rem;
-    }
-    .email-rendered-content img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
+    .email-rendered-content a:hover { color: #818cf8 !important; }
+    .email-rendered-content p { margin-bottom: 0.8rem; }
+    .email-rendered-content img { max-width: 100%; height: auto; border-radius: 8px; }
 
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-    ::-webkit-scrollbar-track {
-      background: rgba(15, 23, 42, 0.6);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: rgba(51, 65, 85, 0.8);
-      border-radius: 4px;
-    }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    ::-webkit-scrollbar-thumb { background: rgba(51, 65, 85, 0.8); border-radius: 4px; }
   </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-  <!-- Background Glows -->
+  <!-- Ambient Glows -->
   <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[140px] pointer-events-none"></div>
   <div class="fixed bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-purple-600/15 rounded-full blur-[140px] pointer-events-none"></div>
 
@@ -75,7 +55,7 @@
         </div>
         <div class="flex items-center gap-2">
           <span class="font-extrabold text-xl text-white">Mail<span class="text-indigo-400">Boxer</span></span>
-          <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">PRO</span>
+          <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">T-MAIL</span>
         </div>
       </div>
 
@@ -83,29 +63,28 @@
         <span class="relative flex h-2 w-2">
           <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
-        <span>Siap Menerima Pesan</span>
+        <span>TMail Connected</span>
       </div>
     </div>
   </header>
 
-  <!-- Main Container -->
+  <!-- Main Area -->
   <main class="max-w-4xl w-full mx-auto px-4 py-8 flex-1 flex flex-col gap-6">
 
-    <!-- Active Email Box -->
+    <!-- Active Email Display Card -->
     <div class="bg-slate-900/80 border border-slate-800/90 rounded-3xl p-6 shadow-2xl backdrop-blur-xl">
       <div class="text-center max-w-xl mx-auto mb-6">
-        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Temporary Email</h1>
-        <p class="text-slate-400 text-sm mt-1">Akses email baru atau masukkan email lama kamu di sini.</p>
+        <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Temporary Custom Email</h1>
+        <p class="text-slate-400 text-sm mt-1">Akses inbox email lama atau buat alamat custom baru secara bebas.</p>
       </div>
 
-      <!-- Display Email -->
       <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="flex items-center gap-3 w-full sm:w-auto overflow-hidden">
           <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0">
             <i data-lucide="at-sign" class="w-5 h-5"></i>
           </div>
           <div class="truncate">
-            <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">ALAMAT EMAIL KAMU:</span>
+            <span class="text-[10px] text-slate-500 uppercase tracking-wider block font-bold">ALAMAT EMAIL AKTIF:</span>
             <span id="activeEmailDisplay" class="font-mono-custom text-base sm:text-lg text-indigo-300 font-bold truncate block">Sedang disiapkan...</span>
           </div>
         </div>
@@ -133,13 +112,13 @@
       <div class="mt-6 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 pt-4">
         <div class="flex items-center gap-2">
           <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-          <span>Privasi Terjaga • Tekan "Segarkan Inbox" untuk Cek Email</span>
+          <span>TMail Engine • Siap Terima Pesan</span>
         </div>
         <span id="statusText" class="text-indigo-400 font-medium">Menghubungkan...</span>
       </div>
     </div>
 
-    <!-- Inbox Container -->
+    <!-- Inbox List -->
     <div class="bg-slate-900/50 border border-slate-800/80 rounded-3xl p-6 backdrop-blur-xl flex-1 flex flex-col">
       <div class="flex items-center justify-between mb-4">
         <div class="flex items-center gap-2.5">
@@ -160,7 +139,7 @@
               <i data-lucide="inbox" class="w-6 h-6"></i>
             </div>
             <p class="text-slate-300 font-medium text-sm">Belum ada pesan masuk</p>
-            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email di atas. Klik "Segarkan Inbox" untuk memperbarui.</p>
+            <p class="text-slate-500 text-xs mt-1 max-w-xs">Tekan "Segarkan Inbox" untuk memperbarui pesan baru.</p>
           </li>
         </ul>
       </div>
@@ -172,7 +151,7 @@
   <div id="customEmailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl text-slate-200">
       <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-        <h3 class="text-lg font-bold text-white">Custom Email</h3>
+        <h3 class="text-lg font-bold text-white">Custom TMail Address</h3>
         <button onclick="closeCustomModal()" class="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-slate-800 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -180,12 +159,14 @@
 
       <form onsubmit="handleCustomEmailSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1.5">Full Email Address / Username:</label>
-          <input type="text" id="fullEmailInput" placeholder="mrwgznrk@guerrillamailblock.com" required
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Username / Email Address:</label>
+          <input type="text" id="fullEmailInput" placeholder="mrwgznrk@1secmail.com" required
                  class="w-full bg-slate-950 border border-slate-700/80 text-white font-mono-custom text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600">
           <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
-            Masukkan alamat email lama atau username kamu.<br>
-            Contoh: <span class="text-indigo-400 font-mono-custom">mrwgznrk@guerrillamailblock.com</span>
+            Domain TMail yang tersedia: <br>
+            <span class="text-indigo-400 font-mono-custom">@1secmail.com</span>, 
+            <span class="text-indigo-400 font-mono-custom">@1secmail.org</span>, 
+            <span class="text-indigo-400 font-mono-custom">@1secmail.net</span>
           </p>
         </div>
 
@@ -196,7 +177,7 @@
     </div>
   </div>
 
-  <!-- MODAL BACA EMAIL (SEPERTI GMAIL) -->
+  <!-- MODAL BACA EMAIL (FORMAT GMAIL) -->
   <div id="emailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative flex flex-col max-h-[85vh] text-slate-200">
       <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
@@ -209,7 +190,7 @@
         </button>
       </div>
       
-      <!-- Box Isi Pesan HTML -->
+      <!-- Isi Email Dirender Lengkap -->
       <div id="modalBody" class="flex-1 overflow-y-auto email-rendered-content bg-slate-950/80 p-5 rounded-2xl border border-slate-800">
         Memuat isi pesan...
       </div>
@@ -224,83 +205,164 @@
 
   <!-- Footer -->
   <footer class="border-t border-slate-800/60 py-4 text-center text-xs text-slate-500">
-    <p>© MailBoxer Pro.</p>
+    <p>© MailBoxer Pro - Powered by TMail API Engine.</p>
   </footer>
 
   <script>
-    let sidToken = '';
-    let currentEmail = '';
+    let currentLogin = '';
+    let currentDomain = '';
+    let defaultDomains = ['1secmail.com', '1secmail.org', '1secmail.net'];
 
     lucide.createIcons();
 
-    // Utilitas Membersihkan Teks
-    function cleanText(text) {
-      if (!text) return '';
-      const doc = new DOMParser().parseFromString(text, 'text/html');
-      return doc.body.textContent || text;
-    }
-
     // Inisialisasi Email Pertama
     async function initEmail() {
-      try {
-        const res = await fetch('https://api.guerrillamail.com/ajax.php?f=get_email_address');
-        const data = await res.json();
-        sidToken = data.sid_token;
-        currentEmail = data.email_addr;
-
-        updateUIEmail(currentEmail);
-        document.getElementById('statusText').innerText = "Email Siap Digunakan";
-        checkInbox();
-      } catch (err) {
-        console.error(err);
-        document.getElementById('statusText').innerText = "Gagal terhubung ke API.";
-      }
+      const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
+      setCustomEmail(randUser, '1secmail.com');
     }
 
-    // Fungsi Utama Beralih Email (Custom Email)
-    async function switchEmailTo(inputEmail) {
-      const statusText = document.getElementById('statusText');
-      statusText.innerText = "Mengakses email...";
+    // Set Email Aktif
+    function setCustomEmail(login, domain) {
+      currentLogin = login.toLowerCase().trim();
+      currentDomain = domain ? domain.toLowerCase().trim() : '1secmail.com';
 
-      // Ekstraksi Username & Domain dari Input
-      let emailUser = inputEmail.trim().toLowerCase();
-      let siteDomain = '';
+      const fullAddress = `${currentLogin}@${currentDomain}`;
+      document.getElementById('activeEmailDisplay').innerText = fullAddress;
+      document.getElementById('statusText').innerText = "Email Aktif & Siap Menerima Pesan";
 
-      if (emailUser.includes('@')) {
-        const parts = emailUser.split('@');
-        emailUser = parts[0];
-        siteDomain = parts[1];
-      }
-
-      try {
-        // Panggil endpoint set_email_user dengan parameter yang pas
-        let url = `https://api.guerrillamail.com/ajax.php?f=set_email_user&email_user=${encodeURIComponent(emailUser)}&sid_token=${sidToken}`;
-        if (siteDomain) {
-          url += `&site=${encodeURIComponent(siteDomain)}`;
-        }
-
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (data && data.email_addr) {
-          currentEmail = data.email_addr;
-          if (data.sid_token) sidToken = data.sid_token;
-
-          updateUIEmail(currentEmail);
-          statusText.innerText = "Berhasil Memuat Email!";
-          checkInbox(true);
-        } else {
-          throw new Error("Respon API tidak valid");
-        }
-      } catch (err) {
-        console.error(err);
-        statusText.innerText = "Gagal beralih. Coba username lain.";
-      }
+      checkInbox(true);
     }
 
+    // Acak Email
     function generateRandomEmail() {
       const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
-      switchEmailTo(randUser);
+      const randDomain = defaultDomains[Math.floor(Math.random() * defaultDomains.length)];
+      setCustomEmail(randUser, randDomain);
+    }
+
+    // Process Custom Email Modal Submit
+    function handleCustomEmailSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('fullEmailInput').value.trim();
+
+      if (!input) return;
+
+      let login = input;
+      let domain = '1secmail.com';
+
+      if (input.includes('@')) {
+        const parts = input.split('@');
+        login = parts[0];
+        domain = parts[1] || '1secmail.com';
+      }
+
+      setCustomEmail(login, domain);
+      closeCustomModal();
+    }
+
+    // Check Inbox ke API TMail (1secmail)
+    async function checkInbox(manual = false) {
+      if (!currentLogin || !currentDomain) return;
+
+      const statusText = document.getElementById('statusText');
+      const refreshIcon = document.getElementById('refreshIcon');
+
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+      if (manual) statusText.innerText = "Memeriksa inbox TMail...";
+
+      try {
+        const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`);
+        const messages = await res.json();
+
+        document.getElementById('messageBadge').innerText = messages.length;
+        renderInbox(messages);
+
+        statusText.innerText = "Selesai diperbarui";
+      } catch (err) {
+        console.error(err);
+        statusText.innerText = "Gagal terhubung ke TMail API.";
+      } finally {
+        if (refreshIcon) {
+          setTimeout(() => refreshIcon.classList.remove('animate-spin'), 500);
+        }
+      }
+    }
+
+    // Render List Inbox
+    function renderInbox(messages) {
+      const inboxList = document.getElementById('inboxList');
+
+      if (!messages || messages.length === 0) {
+        inboxList.innerHTML = `
+          <li class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-8 text-center flex flex-col items-center justify-center">
+            <div class="w-12 h-12 rounded-2xl bg-slate-800/60 text-slate-500 flex items-center justify-center mb-3">
+              <i data-lucide="inbox" class="w-6 h-6"></i>
+            </div>
+            <p class="text-slate-300 font-medium text-sm">Belum ada pesan masuk</p>
+            <p class="text-slate-500 text-xs mt-1 max-w-xs">Tekan "Segarkan Inbox" untuk mengecek email baru.</p>
+          </li>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      inboxList.innerHTML = '';
+      messages.forEach(msg => {
+        const li = document.createElement('li');
+        li.className = 'bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-4 transition duration-200 cursor-pointer flex items-center justify-between gap-4 group';
+        li.onclick = () => openEmailModal(msg.id);
+
+        li.innerHTML = `
+          <div class="flex items-center gap-3.5 overflow-hidden">
+            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
+              <i data-lucide="mail-open" class="w-5 h-5"></i>
+            </div>
+            <div class="truncate">
+              <p class="text-xs text-slate-400 font-mono-custom truncate">${msg.from}</p>
+              <h4 class="text-sm font-bold text-white truncate mt-0.5">${msg.subject || '(Tanpa Subjek)'}</h4>
+            </div>
+          </div>
+          <div class="text-right flex-shrink-0">
+            <span class="text-[10px] text-slate-500 block">${msg.date}</span>
+            <span class="text-xs text-indigo-400 font-medium group-hover:translate-x-0.5 transition inline-block mt-1">Buka →</span>
+          </div>
+        `;
+        inboxList.appendChild(li);
+      });
+      lucide.createIcons();
+    }
+
+    // Modal Buka Email (Render HTML Seperti Gmail)
+    async function openEmailModal(msgId) {
+      const modal = document.getElementById('emailModal');
+      const subject = document.getElementById('modalSubject');
+      const sender = document.getElementById('modalSender');
+      const body = document.getElementById('modalBody');
+
+      modal.classList.remove('hidden');
+      body.innerHTML = "<p class='text-slate-400 italic'>Memuat isi email...</p>";
+
+      try {
+        const res = await fetch(`https://www.1secmail.com/api/v1/?action=readMessage&login=${currentLogin}&domain=${currentDomain}&id=${msgId}`);
+        const data = await res.json();
+
+        subject.innerText = data.subject || '(Tanpa Subjek)';
+        sender.innerText = `Dari: ${data.from}`;
+
+        // Jika ada HTML, gunakan htmlBody, jika tidak ada fallback ke textBody
+        let htmlContent = data.htmlBody || `<p>${data.textBody}</p>` || 'Pesan kosong.';
+        body.innerHTML = htmlContent;
+
+        // Ubah semua link agar terbuka di tab baru saat diklik
+        const links = body.querySelectorAll('a');
+        links.forEach(a => {
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+        });
+
+      } catch (err) {
+        body.innerHTML = "<p class='text-red-400'>Gagal membaca pesan dari server TMail.</p>";
+      }
     }
 
     function openCustomModal() {
@@ -312,140 +374,13 @@
       document.getElementById('customEmailModal').classList.add('hidden');
     }
 
-    function handleCustomEmailSubmit(e) {
-      e.preventDefault();
-      const val = document.getElementById('fullEmailInput').value;
-      if (val) {
-        switchEmailTo(val);
-        closeCustomModal();
-      }
-    }
-
-    function updateUIEmail(email) {
-      document.getElementById('activeEmailDisplay').innerText = email;
-    }
-
-    // Periksa Inbox
-    async function checkInbox(manual = false) {
-      if (!sidToken) return;
-
-      const statusText = document.getElementById('statusText');
-      const refreshIcon = document.getElementById('refreshIcon');
-
-      if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (manual) statusText.innerText = "Memeriksa inbox...";
-
-      try {
-        const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=check_email&sid_token=${sidToken}&seq=0`);
-        const data = await res.json();
-        const messages = data.list || [];
-
-        // Filter out pesan sambutan internal Guerrilla jika ada
-        const filtered = messages.filter(m => m.mail_from !== 'no-reply@guerrillamail.com');
-
-        document.getElementById('messageBadge').innerText = filtered.length;
-        renderInbox(filtered);
-
-        statusText.innerText = "Selesai diperbarui";
-      } catch (err) {
-        console.error(err);
-        statusText.innerText = "Gagal memperbarui inbox.";
-      } finally {
-        if (refreshIcon) {
-          setTimeout(() => refreshIcon.classList.remove('animate-spin'), 500);
-        }
-      }
-    }
-
-    // Render Daftar Inbox
-    function renderInbox(messages) {
-      const inboxList = document.getElementById('inboxList');
-
-      if (messages.length === 0) {
-        inboxList.innerHTML = `
-          <li class="bg-slate-950/40 border border-slate-800/60 rounded-2xl p-8 text-center flex flex-col items-center justify-center">
-            <div class="w-12 h-12 rounded-2xl bg-slate-800/60 text-slate-500 flex items-center justify-center mb-3">
-              <i data-lucide="inbox" class="w-6 h-6"></i>
-            </div>
-            <p class="text-slate-300 font-medium text-sm">Belum ada pesan masuk</p>
-            <p class="text-slate-500 text-xs mt-1 max-w-xs">Gunakan alamat email di atas. Klik "Segarkan Inbox" untuk mengecek ulang.</p>
-          </li>
-        `;
-        lucide.createIcons();
-        return;
-      }
-
-      inboxList.innerHTML = '';
-      messages.forEach(msg => {
-        const sender = cleanText(msg.mail_from) || 'Tanpa Pengirim';
-        const subject = cleanText(msg.mail_subject) || '(Tanpa Subjek)';
-        const excerpt = cleanText(msg.mail_excerpt);
-
-        const li = document.createElement('li');
-        li.className = 'bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-4 transition duration-200 cursor-pointer flex items-center justify-between gap-4 group';
-        li.onclick = () => openEmailModal(msg.mail_id);
-
-        li.innerHTML = `
-          <div class="flex items-center gap-3.5 overflow-hidden">
-            <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
-              <i data-lucide="mail-open" class="w-5 h-5"></i>
-            </div>
-            <div class="truncate">
-              <p class="text-xs text-slate-400 font-mono-custom truncate">${sender}</p>
-              <h4 class="text-sm font-bold text-white truncate mt-0.5">${subject}</h4>
-              <p class="text-xs text-slate-400 truncate mt-0.5">${excerpt}</p>
-            </div>
-          </div>
-          <div class="text-right flex-shrink-0">
-            <span class="text-[10px] text-slate-500 block">${msg.mail_date}</span>
-            <span class="text-xs text-indigo-400 font-medium group-hover:translate-x-0.5 transition inline-block mt-1">Buka →</span>
-          </div>
-        `;
-        inboxList.appendChild(li);
-      });
-      lucide.createIcons();
-    }
-
-    // Modal Baca Email (Format HTML Ala Gmail)
-    async function openEmailModal(mailId) {
-      const modal = document.getElementById('emailModal');
-      const subject = document.getElementById('modalSubject');
-      const sender = document.getElementById('modalSender');
-      const body = document.getElementById('modalBody');
-
-      modal.classList.remove('hidden');
-      body.innerHTML = "<p class='text-slate-400 italic'>Memuat isi email lengkap...</p>";
-
-      try {
-        const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=fetch_email&sid_token=${sidToken}&email_id=${mailId}`);
-        const data = await res.json();
-
-        subject.innerText = cleanText(data.mail_subject) || '(Tanpa Subjek)';
-        sender.innerText = `Dari: ${cleanText(data.mail_from)}`;
-
-        // Render HTML secara utuh agar berbentuk tampilan email asli & link bisa diklik
-        let htmlBody = data.mail_body || data.mail_excerpt || 'Pesan kosong.';
-        body.innerHTML = htmlBody;
-
-        // Pastikan semua tag <a>/link bisa diklik & membuka tab baru
-        const links = body.querySelectorAll('a');
-        links.forEach(a => {
-          a.setAttribute('target', '_blank');
-          a.setAttribute('rel', 'noopener noreferrer');
-        });
-
-      } catch (err) {
-        body.innerHTML = "<p class='text-red-400'>Gagal memuat detail pesan.</p>";
-      }
-    }
-
     function closeModal() {
       document.getElementById('emailModal').classList.add('hidden');
     }
 
     function copyEmail() {
-      if (!currentEmail) return;
-      navigator.clipboard.writeText(currentEmail);
+      const email = `${currentLogin}@${currentDomain}`;
+      navigator.clipboard.writeText(email);
       const btn = document.getElementById('btnCopy');
       btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span class="text-emerald-400">Tersalin!</span>`;
       setTimeout(() => {
