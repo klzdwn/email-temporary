@@ -3,94 +3,339 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Email Sementara Ku</title>
+  <title>Layanan Email Sementara</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 30px auto; padding: 20px; background: #f4f6f8; }
-    .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    .email-box { display: flex; gap: 10px; margin-bottom: 20px; }
-    input { flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-    button { padding: 10px 15px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-    button:hover { background: #0056b3; }
-    ul { list-style: none; padding: 0; }
-    li { background: #eef2f5; margin-bottom: 8px; padding: 12px; border-radius: 4px; }
-    .sender { font-weight: bold; font-size: 14px; }
-    .subject { color: #333; margin-top: 4px; }
+    /* RESET & BASE STYLES */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      color: #1f2937;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* CONTAINER CARD */
+    .container {
+      background: #ffffff;
+      width: 100%;
+      max-width: 550px;
+      padding: 28px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
+    }
+
+    .header {
+      margin-bottom: 24px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 6px;
+    }
+
+    .header p {
+      font-size: 14px;
+      color: #6b7280;
+    }
+
+    /* EMAIL BOX & INPUT */
+    .email-box {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .input-wrapper {
+      position: relative;
+      flex: 1;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 16px;
+      font-size: 15px;
+      color: #1f2937;
+      background-color: #f9fafb;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    input[type="text"]:focus {
+      border-color: #2563eb;
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* BUTTONS */
+    .btn {
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background-color: #2563eb;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background-color: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background-color: #e5e7eb;
+      color: #374151;
+    }
+
+    .btn-secondary:hover {
+      background-color: #d1d5db;
+    }
+
+    /* STATUS BADGE */
+    .status-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background-color: #10b981;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    /* INBOX SECTION */
+    .inbox-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .inbox-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .inbox-item {
+      background-color: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 14px 16px;
+      transition: border-color 0.2s ease;
+    }
+
+    .inbox-item:hover {
+      border-color: #2563eb;
+    }
+
+    .mail-sender {
+      font-size: 13px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 2px;
+    }
+
+    .mail-subject {
+      font-size: 14px;
+      font-weight: 500;
+      color: #2563eb;
+      margin-bottom: 6px;
+    }
+
+    .mail-preview {
+      font-size: 13px;
+      color: #4b5563;
+      line-height: 1.4;
+    }
+
+    .empty-inbox {
+      text-align: center;
+      padding: 30px 10px;
+      color: #9ca3af;
+      font-size: 14px;
+      background-color: #f9fafb;
+      border: 1px dashed #d1d5db;
+      border-radius: 8px;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 480px) {
+      .email-box {
+        flex-direction: column;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>📧 Generator Email Sementara</h2>
-    <div class="email-box">
-      <input type="text" id="emailInput" readonly value="Membuat email...">
-      <button onclick="generateNewEmail()">Buat Baru</button>
+  <div class="container">
+    <div class="header">
+      <h1>Email Sementara</h1>
+      <p>Terima pesan gratis tanpa perlu mendaftar</p>
     </div>
 
-    <h3>Inbox (Otomatis Cek):</h3>
-    <ul id="inboxList">
-      <li>Belum ada email masuk...</li>
+    <!-- EMAIL GENERATOR SECTION -->
+    <div class="email-box">
+      <div class="input-wrapper">
+        <input type="text" id="emailInput" readonly value="Sedang membuat email...">
+      </div>
+      <button class="btn btn-secondary" onclick="copyEmail()">Salin</button>
+      <button class="btn btn-primary" onclick="createNewAccount()">Buat Baru</button>
+    </div>
+
+    <div class="status-container">
+      <span class="status-dot"></span>
+      <span id="statusText">Status: Menghubungkan ke server...</span>
+    </div>
+
+    <!-- INBOX SECTION -->
+    <div class="inbox-title">
+      <span>Kotak Masuk</span>
+    </div>
+
+    <ul class="inbox-list" id="inboxList">
+      <li class="empty-inbox">Belum ada email masuk...</li>
     </ul>
   </div>
 
   <script>
-    let currentLogin = '';
-    let currentDomain = '';
+    const API_URL = 'https://api.mail.tm';
+    let token = '';
 
-    // 1. Fungsi untuk buat email baru
-    async function generateNewEmail() {
+    // 1. Fungsi Bikin Email Baru
+    async function createNewAccount() {
+      const statusText = document.getElementById('statusText');
+      const emailInput = document.getElementById('emailInput');
+      
+      emailInput.value = "Sedang membuat email...";
+      document.getElementById('inboxList').innerHTML = '<li class="empty-inbox">Belum ada email masuk...</li>';
+      statusText.innerText = "Status: Mengambil domain baru...";
+
       try {
-        const res = await fetch('https://www.1secmail.com/api/v1/?action=getDomainList');
-        const domains = await res.json();
-        
-        currentDomain = domains[0]; // Pakai domain pertama
-        currentLogin = Math.random().toString(36).substring(2, 10); // Random username
-        
-        const fullEmail = `${currentLogin}@${currentDomain}`;
-        document.getElementById('emailInput').value = fullEmail;
-        
-        // Reset list inbox
-        document.getElementById('inboxList').innerHTML = '<li>Belum ada email masuk...</li>';
-        
-        // Langsung cek inbox pertama kali
+        // Ambil daftar domain dari server
+        const domainRes = await fetch(`${API_URL}/domains`);
+        const domainData = await domainRes.json();
+        const domain = domainData['hydra:member'][0].domain;
+
+        // Generate username & password acak
+        const username = `user_${Math.random().toString(36).substring(2, 9)}`;
+        const email = `${username}@${domain}`;
+        const password = 'Password123!';
+
+        // Buat Akun
+        await fetch(`${API_URL}/accounts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: email, password: password })
+        });
+
+        // Ambil Token Akses (Login)
+        const tokenRes = await fetch(`${API_URL}/token`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ address: email, password: password })
+        });
+        const tokenData = await tokenRes.json();
+        token = tokenData.token;
+
+        // Update Tampilan
+        emailInput.value = email;
+        statusText.innerText = "Status: Aktif (Mengecek inbox otomatis)";
+
+        // Cek inbox pertama kali
         checkInbox();
+
       } catch (err) {
-        console.error("Gagal generate email:", err);
+        console.error(err);
+        statusText.innerText = "Status: Gagal membuat email. Silakan coba lagi.";
       }
     }
 
-    // 2. Fungsi untuk cek inbox
+    // 2. Fungsi Cek Inbox Masuk
     async function checkInbox() {
-      if (!currentLogin || !currentDomain) return;
+      if (!token) return;
 
       try {
-        const res = await fetch(`https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`);
-        const messages = await res.json();
+        const res = await fetch(`${API_URL}/messages`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        const messages = data['hydra:member'];
 
         const inboxList = document.getElementById('inboxList');
-        
+
         if (messages.length === 0) {
-          inboxList.innerHTML = '<li>Belum ada email masuk...</li>';
+          inboxList.innerHTML = '<li class="empty-inbox">Belum ada email masuk...</li>';
           return;
         }
 
         inboxList.innerHTML = '';
         messages.forEach(msg => {
           const li = document.createElement('li');
+          li.className = 'inbox-item';
           li.innerHTML = `
-            <div class="sender">Dari: ${msg.from}</div>
-            <div class="subject">Subjek: ${msg.subject}</div>
+            <div class="mail-sender">Dari: ${msg.from.address}</div>
+            <div class="mail-subject">${msg.subject || '(Tanpa Subjek)'}</div>
+            <div class="mail-preview">${msg.intro || 'Tidak ada pratinjau pesan.'}</div>
           `;
           inboxList.appendChild(li);
         });
+
       } catch (err) {
-        console.error("Gagal cek inbox:", err);
+        console.error("Gagal mengambil pesan:", err);
       }
     }
 
-    // Jalankan saat pertama kali halaman di-load
-    generateNewEmail();
+    // 3. Fungsi Salin Alamat Email
+    function copyEmail() {
+      const emailInput = document.getElementById('emailInput');
+      if (!emailInput.value || emailInput.value.includes('...')) return;
 
-    // Cek email otomatis setiap 5 detik (Polling)
+      navigator.clipboard.writeText(emailInput.value);
+      alert('Email berhasil disalin ke clipboard!');
+    }
+
+    // Jalankan saat pertama kali dibuka
+    createNewAccount();
+
+    // Otomatis cek inbox setiap 5 detik
     setInterval(checkInbox, 5000);
   </script>
 
