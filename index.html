@@ -23,6 +23,34 @@
       font-family: 'Fira Code', monospace;
     }
 
+    /* Style untuk rendering HTML email agar mirip Gmail */
+    .email-rendered-content {
+      color: #cbd5e1;
+      font-family: system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    .email-rendered-content a {
+      color: #818cf8 !important;
+      text-decoration: underline !important;
+      word-break: break-all;
+    }
+    .email-rendered-content a:hover {
+      color: #a5b4fc !important;
+    }
+    .email-rendered-content p {
+      margin-bottom: 0.75rem;
+    }
+    .email-rendered-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin: 8px 0;
+    }
+    .email-rendered-content table {
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -76,7 +104,7 @@
       
       <div class="text-center max-w-xl mx-auto mb-6">
         <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Temporary Email</h1>
-        <p class="text-slate-400 text-sm mt-1">Gunakan alamat email di bawah atau ubah sesuai keinginanmu secara custom.</p>
+        <p class="text-slate-400 text-sm mt-1">Gunakan alamat email di bawah atau akses email lama/baru kamu secara custom.</p>
       </div>
 
       <!-- Active Email Display Bar -->
@@ -167,14 +195,14 @@
       <form onsubmit="handleCustomEmailSubmit(event)" class="space-y-4">
         <div>
           <label class="block text-xs font-medium text-slate-400 mb-1.5">Full Email Address:</label>
-          <!-- Input kosongan tanpa value bawaan -->
-          <input type="email" id="fullEmailInput" placeholder="johndoe123@guerrillamail.com" required
+          <input type="text" id="fullEmailInput" placeholder="johndoe123@guerrillamail.com" required
                  class="w-full bg-slate-950 border border-slate-700/80 text-white font-mono-custom text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600">
           <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
+            Ketik email lama atau baru.<br>
             Contoh domain yang didukung:<br>
             <span class="text-indigo-400 font-mono-custom">@guerrillamail.com</span>, 
             <span class="text-indigo-400 font-mono-custom">@sharklasers.com</span>, 
-            <span class="text-indigo-400 font-mono-custom">@guerrillamail.block</span>
+            <span class="text-indigo-400 font-mono-custom">@guerrillamailblock.com</span>
           </p>
         </div>
 
@@ -198,7 +226,8 @@
         </button>
       </div>
       
-      <div id="modalBody" class="flex-1 overflow-y-auto font-sans text-sm leading-relaxed text-slate-300 bg-slate-950/80 p-5 rounded-2xl border border-slate-800 whitespace-pre-wrap">
+      <!-- Container yang merender HTML email secara utuh -->
+      <div id="modalBody" class="flex-1 overflow-y-auto email-rendered-content bg-slate-950/80 p-5 rounded-2xl border border-slate-800">
         Memuat isi pesan...
       </div>
 
@@ -221,6 +250,7 @@
 
     const availableDomains = [
       'guerrillamail.com',
+      'guerrillamailblock.com',
       'guerrillamail.block',
       'sharklasers.com',
       'guerrillamail.net',
@@ -254,10 +284,10 @@
       }
     }
 
-    // Open Modal Custom Email (Di-reset menjadi KOSONG saat dibuka)
+    // Open Modal Custom Email
     function openCustomModal() {
       const input = document.getElementById('fullEmailInput');
-      input.value = ''; // Kosongkan input
+      input.value = '';
       document.getElementById('customEmailModal').classList.remove('hidden');
       input.focus();
     }
@@ -271,27 +301,23 @@
       e.preventDefault();
       const input = document.getElementById('fullEmailInput').value.trim().toLowerCase();
 
-      if (!input.includes('@')) {
-        alert("Masukkan alamat email yang valid! Contoh: username@guerrillamail.com");
-        return;
-      }
+      let username = input;
+      let domain = 'guerrillamail.com';
 
-      const parts = input.split('@');
-      const username = parts[0];
-      let domain = parts[1];
-
-      if (!availableDomains.includes(domain)) {
-        domain = 'guerrillamail.com';
+      if (input.includes('@')) {
+        const parts = input.split('@');
+        username = parts[0];
+        domain = parts[1] || 'guerrillamail.com';
       }
 
       switchEmailTo(username, domain);
       closeCustomModal();
     }
 
-    // Switch Email via API Guerrilla Mail
+    // Switch Email ke Alamat Lama/Baru via API
     async function switchEmailTo(username, domain) {
       const statusText = document.getElementById('statusText');
-      statusText.innerText = "Mengambil email...";
+      statusText.innerText = "Mengakses email...";
 
       try {
         const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=set_email_user&email_user=${encodeURIComponent(username)}&sid_token=${sidToken}&site=${domain}`);
@@ -302,7 +328,7 @@
 
         updateUIEmailDisplay(currentEmail);
 
-        statusText.innerText = "Berhasil Beralih Email!";
+        statusText.innerText = "Berhasil Memuat Email!";
         checkInbox(true);
       } catch (err) {
         console.error(err);
@@ -400,7 +426,7 @@
       lucide.createIcons();
     }
 
-    // Modal Baca Email
+    // Modal Baca Email (Merender isi HTML secara rapi)
     async function openEmailModal(mailId) {
       const modal = document.getElementById('emailModal');
       const subject = document.getElementById('modalSubject');
@@ -408,7 +434,7 @@
       const body = document.getElementById('modalBody');
 
       modal.classList.remove('hidden');
-      body.innerText = "Memuat isi email lengkap...";
+      body.innerHTML = "<p class='text-slate-400 italic'>Memuat isi email lengkap...</p>";
 
       try {
         const res = await fetch(`https://api.guerrillamail.com/ajax.php?f=fetch_email&sid_token=${sidToken}&email_id=${mailId}`);
@@ -416,9 +442,20 @@
 
         subject.innerText = cleanSenderText(data.mail_subject) || '(Tanpa Subjek)';
         sender.innerText = `Dari: ${cleanSenderText(data.mail_from)}`;
-        body.innerText = data.mail_body || data.mail_excerpt || 'Pesan kosong.';
+
+        // Render HTML Email
+        let rawBody = data.mail_body || data.mail_excerpt || 'Pesan kosong.';
+        
+        // Memastikan link dalam email terbuka di tab baru
+        body.innerHTML = rawBody;
+        const links = body.querySelectorAll('a');
+        links.forEach(link => {
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener noreferrer');
+        });
+
       } catch (err) {
-        body.innerText = "Gagal memuat detail isi pesan.";
+        body.innerHTML = "<p class='text-red-400'>Gagal memuat detail isi pesan.</p>";
       }
     }
 
