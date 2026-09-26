@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MailBoxer Pro - TMail Engine</title>
+  <title>MailBoxer Pro - Mail.tm Engine</title>
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -18,7 +18,7 @@
     body { font-family: 'Plus Jakarta Sans', sans-serif; }
     .font-mono-custom { font-family: 'Fira Code', monospace; }
 
-    /* Style Format Gmail untuk Isi Pesan */
+    /* Rendering Isi Email */
     .email-rendered-content {
       color: #cbd5e1;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -55,15 +55,15 @@
         </div>
         <div class="flex items-center gap-2">
           <span class="font-extrabold text-xl text-white">Mail<span class="text-indigo-400">Boxer</span></span>
-          <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">T-MAIL</span>
+          <span class="bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-[10px] font-bold px-2 py-0.5 rounded-full">MAIL.TM</span>
         </div>
       </div>
 
       <div class="flex items-center gap-2 text-xs bg-slate-800/90 text-slate-300 px-3 py-1.5 rounded-full border border-slate-700/50">
-        <span id="onlineDot" class="relative flex h-2 w-2">
+        <span class="relative flex h-2 w-2">
           <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
         </span>
-        <span id="onlineStatus">Terhubung</span>
+        <span>Mail.tm Connected</span>
       </div>
     </div>
   </header>
@@ -75,7 +75,7 @@
     <div class="bg-slate-900/80 border border-slate-800/90 rounded-3xl p-6 shadow-2xl backdrop-blur-xl">
       <div class="text-center max-w-xl mx-auto mb-6">
         <h1 class="text-2xl md:text-3xl font-extrabold text-white tracking-tight">Temporary Custom Email</h1>
-        <p class="text-slate-400 text-sm mt-1">Akses inbox email lama atau buat alamat custom baru secara bebas.</p>
+        <p class="text-slate-400 text-sm mt-1">Buat email custom atau acak menggunakan Mail.tm Engine yang cepat & bebas CORS.</p>
       </div>
 
       <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -104,7 +104,7 @@
 
         <button onclick="generateRandomEmail()" class="flex items-center gap-2 bg-slate-800/80 hover:bg-slate-700 text-slate-300 px-5 py-2.5 rounded-xl text-xs font-bold border border-slate-700/80 transition active:scale-95">
           <i data-lucide="sparkles" class="w-4 h-4 text-purple-400"></i>
-          <span>Acak Email</span>
+          <span>Acak Email Baru</span>
         </button>
       </div>
 
@@ -112,7 +112,7 @@
       <div class="mt-6 flex items-center justify-between text-xs text-slate-400 border-t border-slate-800/60 pt-4">
         <div class="flex items-center gap-2">
           <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
-          <span>TMail Engine • Siap Terima Pesan</span>
+          <span>Mail.tm Engine • API Siap</span>
         </div>
         <span id="statusText" class="text-indigo-400 font-medium">Menghubungkan...</span>
       </div>
@@ -151,7 +151,7 @@
   <div id="customEmailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl text-slate-200">
       <div class="flex items-center justify-between border-b border-slate-800 pb-4 mb-4">
-        <h3 class="text-lg font-bold text-white">Custom TMail Address</h3>
+        <h3 class="text-lg font-bold text-white">Buat Custom Email</h3>
         <button onclick="closeCustomModal()" class="text-slate-400 hover:text-white p-1 rounded-xl hover:bg-slate-800 transition">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
@@ -159,25 +159,25 @@
 
       <form onsubmit="handleCustomEmailSubmit(event)" class="space-y-4">
         <div>
-          <label class="block text-xs font-medium text-slate-400 mb-1.5">Username / Email Address:</label>
-          <input type="text" id="fullEmailInput" placeholder="mrwgznrk@1secmail.com" required
-                 class="w-full bg-slate-950 border border-slate-700/80 text-white font-mono-custom text-sm rounded-xl px-4 py-3 focus:outline-none focus:border-indigo-500 transition placeholder:text-slate-600">
-          <p class="text-[11px] text-slate-500 mt-2 leading-relaxed">
-            Domain TMail yang tersedia: <br>
-            <span class="text-indigo-400 font-mono-custom">@1secmail.com</span>, 
-            <span class="text-indigo-400 font-mono-custom">@1secmail.org</span>, 
-            <span class="text-indigo-400 font-mono-custom">@1secmail.net</span>
+          <label class="block text-xs font-medium text-slate-400 mb-1.5">Username Custom:</label>
+          <div class="flex items-center bg-slate-950 border border-slate-700/80 rounded-xl overflow-hidden px-3">
+            <input type="text" id="customUsernameInput" placeholder="username_kamu" required
+                   class="w-full bg-transparent text-white font-mono-custom text-sm py-3 focus:outline-none placeholder:text-slate-600">
+            <span id="domainBadge" class="text-xs font-mono-custom text-indigo-400 flex-shrink-0">@...</span>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-2">
+            Sistem akan otomatis meregister username ini di domain Mail.tm yang sedang aktif.
           </p>
         </div>
 
         <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-3 rounded-xl text-sm flex items-center justify-center gap-2 transition shadow-lg shadow-indigo-600/20 active:scale-95">
-          <span>Gunakan Email Ini</span>
+          <span>Buat & Gunakan</span>
         </button>
       </form>
     </div>
   </div>
 
-  <!-- MODAL BACA EMAIL (FORMAT GMAIL) -->
+  <!-- MODAL BACA EMAIL -->
   <div id="emailModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative flex flex-col max-h-[85vh] text-slate-200">
       <div class="flex items-start justify-between border-b border-slate-800 pb-4 mb-4">
@@ -205,108 +205,115 @@
 
   <!-- Footer -->
   <footer class="border-t border-slate-800/60 py-4 text-center text-xs text-slate-500">
-    <p>© MailBoxer Pro - Powered by TMail API Engine.</p>
+    <p>© MailBoxer Pro - Powered by Mail.tm API Engine.</p>
   </footer>
 
   <script>
-    let currentLogin = '';
-    let currentDomain = '';
-    let availableDomains = ['1secmail.com', '1secmail.org', '1secmail.net'];
+    const API_BASE = 'https://api.mail.tm';
+    let currentAccount = null; // { address, password, token }
+    let activeDomain = '';
 
     lucide.createIcons();
 
-    // Utility Fetch dengan Proxy Fallback jika CORS Terhalang
-    async function apiFetch(targetUrl) {
-      try {
-        // Coba panggil langsung
-        const response = await fetch(targetUrl);
-        if (response.ok) return await response.json();
-      } catch (err) {
-        console.warn("Direct fetch failed, trying CORS proxy...", err);
+    // 1. Ambil Domain Aktif Mail.tm
+    async function getDomain() {
+      const res = await fetch(`${API_BASE}/domains`);
+      const data = await res.json();
+      if (data && data['hydra:member'] && data['hydra:member'].length > 0) {
+        activeDomain = data['hydra:member'][0].domain;
+        document.getElementById('domainBadge').innerText = '@' + activeDomain;
+        return activeDomain;
       }
-
-      // Jika diblokir CORS oleh browser, gunakan Corsproxy fallback
-      const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`;
-      const proxyResponse = await fetch(proxyUrl);
-      return await proxyResponse.json();
+      throw new Error("Gagal mengambil domain Mail.tm");
     }
 
-    // Inisialisasi Email Pertama
-    async function initEmail() {
-      try {
-        // Ambil daftar domain aktif jika tersedia
-        const domains = await apiFetch('https://www.1secmail.com/api/v1/?action=getDomainList');
-        if (domains && domains.length > 0) {
-          availableDomains = domains;
-        }
-      } catch (e) {
-        console.log("Menggunakan domain default");
+    // 2. Buat Akun & Dapatkan Token
+    async function createAccount(username, password) {
+      if (!activeDomain) await getDomain();
+
+      const address = `${username.toLowerCase().trim()}@${activeDomain}`;
+
+      // Buat User
+      const createRes = await fetch(`${API_BASE}/accounts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address, password })
+      });
+
+      // Jika akun sudah ada, kita langsung coba login
+      if (!createRes.ok && createRes.status !== 422) {
+        throw new Error("Gagal membuat akun");
       }
 
-      const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
-      setCustomEmail(randUser, availableDomains[0] || '1secmail.com');
-    }
+      // Ambil JWT Token
+      const tokenRes = await fetch(`${API_BASE}/token`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ address, password })
+      });
 
-    // Set Email Aktif
-    function setCustomEmail(login, domain) {
-      currentLogin = login.toLowerCase().trim();
-      currentDomain = domain ? domain.toLowerCase().trim() : '1secmail.com';
+      if (!tokenRes.ok) throw new Error("Gagal otentikasi token");
 
-      const fullAddress = `${currentLogin}@${currentDomain}`;
-      document.getElementById('activeEmailDisplay').innerText = fullAddress;
+      const tokenData = await tokenRes.json();
+      currentAccount = { address, password, token: tokenData.token };
+
+      document.getElementById('activeEmailDisplay').innerText = address;
       document.getElementById('statusText').innerText = "Email Aktif & Siap Menerima Pesan";
 
       checkInbox(true);
     }
 
-    // Acak Email
-    function generateRandomEmail() {
+    // 3. Generate Email Acak
+    async function generateRandomEmail() {
+      document.getElementById('statusText').innerText = "Membuat email baru...";
       const randUser = 'user_' + Math.random().toString(36).substring(2, 9);
-      const randDomain = availableDomains[Math.floor(Math.random() * availableDomains.length)];
-      setCustomEmail(randUser, randDomain);
-    }
-
-    // Process Custom Email Submit
-    function handleCustomEmailSubmit(e) {
-      e.preventDefault();
-      const input = document.getElementById('fullEmailInput').value.trim();
-
-      if (!input) return;
-
-      let login = input;
-      let domain = availableDomains[0] || '1secmail.com';
-
-      if (input.includes('@')) {
-        const parts = input.split('@');
-        login = parts[0];
-        domain = parts[1] || domain;
+      const randPass = 'Pass_' + Math.random().toString(36).substring(2, 9);
+      try {
+        await createAccount(randUser, randPass);
+      } catch (err) {
+        document.getElementById('statusText').innerText = "Gagal membuat email acak.";
       }
-
-      setCustomEmail(login, domain);
-      closeCustomModal();
     }
 
-    // Check Inbox ke API TMail
+    // 4. Handle Custom Email
+    async function handleCustomEmailSubmit(e) {
+      e.preventDefault();
+      const user = document.getElementById('customUsernameInput').value.trim();
+      if (!user) return;
+
+      document.getElementById('statusText').innerText = "Mendaftarkan custom email...";
+      try {
+        await createAccount(user, "Password123!");
+        closeCustomModal();
+      } catch (err) {
+        alert("Gagal menggunakan username tersebut atau terjadi kesalahan.");
+      }
+    }
+
+    // 5. Cek Inbox Pesan Masuk
     async function checkInbox(manual = false) {
-      if (!currentLogin || !currentDomain) return;
+      if (!currentAccount || !currentAccount.token) return;
 
       const statusText = document.getElementById('statusText');
       const refreshIcon = document.getElementById('refreshIcon');
 
       if (refreshIcon) refreshIcon.classList.add('animate-spin');
-      if (manual) statusText.innerText = "Memeriksa inbox TMail...";
+      if (manual) statusText.innerText = "Memeriksa inbox Mail.tm...";
 
       try {
-        const url = `https://www.1secmail.com/api/v1/?action=getMessages&login=${currentLogin}&domain=${currentDomain}`;
-        const messages = await apiFetch(url);
+        const res = await fetch(`${API_BASE}/messages`, {
+          headers: { 'Authorization': `Bearer ${currentAccount.token}` }
+        });
+        const data = await res.json();
+        const messages = data['hydra:member'] || [];
 
-        document.getElementById('messageBadge').innerText = messages ? messages.length : 0;
-        renderInbox(messages || []);
+        document.getElementById('messageBadge').innerText = messages.length;
+        renderInbox(messages);
 
         statusText.innerText = "Selesai diperbarui";
       } catch (err) {
         console.error(err);
-        statusText.innerText = "Gagal menyegarkan inbox.";
+        statusText.innerText = "Gagal memeriksa pesan.";
       } finally {
         if (refreshIcon) {
           setTimeout(() => refreshIcon.classList.remove('animate-spin'), 500);
@@ -314,7 +321,7 @@
       }
     }
 
-    // Render List Inbox
+    // 6. Render Daftar Inbox
     function renderInbox(messages) {
       const inboxList = document.getElementById('inboxList');
 
@@ -338,18 +345,20 @@
         li.className = 'bg-slate-900/90 border border-slate-800 hover:border-indigo-500/50 rounded-2xl p-4 transition duration-200 cursor-pointer flex items-center justify-between gap-4 group';
         li.onclick = () => openEmailModal(msg.id);
 
+        const dateStr = new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         li.innerHTML = `
           <div class="flex items-center gap-3.5 overflow-hidden">
             <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition duration-200">
               <i data-lucide="mail-open" class="w-5 h-5"></i>
             </div>
             <div class="truncate">
-              <p class="text-xs text-slate-400 font-mono-custom truncate">${msg.from}</p>
+              <p class="text-xs text-slate-400 font-mono-custom truncate">${msg.from.address}</p>
               <h4 class="text-sm font-bold text-white truncate mt-0.5">${msg.subject || '(Tanpa Subjek)'}</h4>
             </div>
           </div>
           <div class="text-right flex-shrink-0">
-            <span class="text-[10px] text-slate-500 block">${msg.date}</span>
+            <span class="text-[10px] text-slate-500 block">${dateStr}</span>
             <span class="text-xs text-indigo-400 font-medium group-hover:translate-x-0.5 transition inline-block mt-1">Buka →</span>
           </div>
         `;
@@ -358,7 +367,7 @@
       lucide.createIcons();
     }
 
-    // Modal Buka Email (Format HTML Gmail)
+    // 7. Baca Detail Pesan (Format HTML Gmail)
     async function openEmailModal(msgId) {
       const modal = document.getElementById('emailModal');
       const subject = document.getElementById('modalSubject');
@@ -369,16 +378,27 @@
       body.innerHTML = "<p class='text-slate-400 italic'>Memuat isi email...</p>";
 
       try {
-        const url = `https://www.1secmail.com/api/v1/?action=readMessage&login=${currentLogin}&domain=${currentDomain}&id=${msgId}`;
-        const data = await apiFetch(url);
+        const res = await fetch(`${API_BASE}/messages/${msgId}`, {
+          headers: { 'Authorization': `Bearer ${currentAccount.token}` }
+        });
+        const data = await res.json();
 
         subject.innerText = data.subject || '(Tanpa Subjek)';
-        sender.innerText = `Dari: ${data.from}`;
+        sender.innerText = `Dari: ${data.from.name ? data.from.name + ' ' : ''}<${data.from.address}>`;
 
-        let htmlContent = data.htmlBody || `<p>${data.textBody}</p>` || 'Pesan kosong.';
+        // Ambil isi HTML jika ada, atau fallback ke array text / html
+        let htmlContent = '';
+        if (data.html && data.html.length > 0) {
+          htmlContent = data.html.join('');
+        } else if (data.text) {
+          htmlContent = `<p>${data.text.replace(/\n/g, '<br>')}</p>`;
+        } else {
+          htmlContent = 'Pesan kosong.';
+        }
+
         body.innerHTML = htmlContent;
 
-        // Ubah semua link agar bisa diklik langsung di tab baru
+        // Pastikan semua link terbuka di tab baru saat diklik
         const links = body.querySelectorAll('a');
         links.forEach(a => {
           a.setAttribute('target', '_blank');
@@ -386,12 +406,12 @@
         });
 
       } catch (err) {
-        body.innerHTML = "<p class='text-red-400'>Gagal membaca pesan dari server TMail.</p>";
+        body.innerHTML = "<p class='text-red-400'>Gagal membaca pesan dari server Mail.tm.</p>";
       }
     }
 
     function openCustomModal() {
-      document.getElementById('fullEmailInput').value = '';
+      document.getElementById('customUsernameInput').value = '';
       document.getElementById('customEmailModal').classList.remove('hidden');
     }
 
@@ -404,8 +424,8 @@
     }
 
     function copyEmail() {
-      const email = `${currentLogin}@${currentDomain}`;
-      navigator.clipboard.writeText(email);
+      if (!currentAccount) return;
+      navigator.clipboard.writeText(currentAccount.address);
       const btn = document.getElementById('btnCopy');
       btn.innerHTML = `<i data-lucide="check" class="w-4 h-4 text-emerald-400"></i><span class="text-emerald-400">Tersalin!</span>`;
       setTimeout(() => {
@@ -414,8 +434,8 @@
       }, 2000);
     }
 
-    // Start App
-    initEmail();
+    // Jalankan Pertama Kali
+    generateRandomEmail();
   </script>
 </body>
 </html>
